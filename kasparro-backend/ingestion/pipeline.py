@@ -37,22 +37,35 @@ def fetch_csv():
 def run_etl():
     db = SessionLocal()
     sources = [fetch_coinpaprika, fetch_coingecko, fetch_csv]
-    
+
     print(f"Starting ETL run at {datetime.utcnow()}")
+
+    # Collect prices by asset for normalization
+    asset_prices = {}
+
     for fetch_func in sources:
         try:
             data = fetch_func()
-            new_record = UnifiedPrice(
-                source=data.source,
-                asset=data.asset,
-                price_usd=data.price_usd,
-                timestamp=data.timestamp
-            )
-            db.add(new_record)
-            print(f"✅ Ingested from {data.source}")
+            asset = data.asset
+            if asset not in asset_prices:
+                asset_prices[asset] = []
+            asset_prices[asset].append(data.price_usd)
+            print(f"✅ Fetched from {data.source}: {asset} = ${data.price_usd}")
         except Exception as e:
             print(f"❌ Failed {fetch_func.__name__}: {e}")
-    
+
+    # Create unified records (average prices across sources)
+    for asset, prices in asset_prices.items():
+        avg_price = sum(prices) / len(prices)
+        unified_record = UnifiedPrice(
+            source="unified",  # Mark as unified data
+            asset=asset,
+            price_usd=round(avg_price, 2),
+            timestamp=datetime.utcnow()
+        )
+        db.add(unified_record)
+        print(f"✅ Unified {asset}: ${avg_price:.2f} (from {len(prices)} sources)")
+
     db.commit()
     db.close()
 

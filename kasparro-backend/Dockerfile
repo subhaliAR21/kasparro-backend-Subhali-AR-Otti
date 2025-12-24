@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 8000
 
 # Use the python -m syntax
-CMD ["python", "-m", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["python", "-m", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD python -m ingestion.pipeline && python -m uvicorn api.main:app --host 0.0.0.0 --port 8000

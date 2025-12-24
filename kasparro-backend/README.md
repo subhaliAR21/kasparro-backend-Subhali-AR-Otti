@@ -9,4 +9,4 @@ Run the ETL pipeline manually:
 `docker exec -it kasparro_api python -m ingestion.pipeline`
 
 ## View Data
-Visit `http://localhost:8000/data`
+Visit `https://kasparro-backend-subhali-ar-otti.onrender.com/`

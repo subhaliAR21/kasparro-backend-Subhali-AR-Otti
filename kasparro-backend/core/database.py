@@ -5,8 +5,9 @@ from sqlalchemy.orm import sessionmaker
 import datetime
 import os
 
-# Get URL from environment or fallback to localhost for local testing
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@db:5432/kasparro_etl")
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is required")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -16,8 +17,7 @@ class UnifiedPrice(Base):
     __tablename__ = "unified_prices"
 
     id = Column(Integer, primary_key=True, index=True)
-    source = Column(String)  # 'coinpaprika', 'coingecko', or 'csv'
-    asset = Column(String)   # e.g., 'BTC'
+    asset = Column(String, unique=True, index=True)   # e.g., 'BTC' - canonical asset identifier
     price_usd = Column(Float)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 

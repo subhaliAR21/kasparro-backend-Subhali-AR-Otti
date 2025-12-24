@@ -40,4 +40,5 @@ def read_root():
 @app.get("/data")
 def get_ingested_data(db: Session = Depends(get_db)):
     prices = db.query(UnifiedPrice).all()
-    return prices
+    # Return data in format expected by frontend (normalized data)
+    return [{"id": price.id, "source": "unified", "asset": price.asset, "price_usd": price.price_usd} for price in prices]

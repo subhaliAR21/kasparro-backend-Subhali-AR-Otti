@@ -8,6 +8,7 @@ A professional full-stack solution developed for an internship assessment. This 
 * **P1.1 Dashboard UI**: Built a professional, full-width React dashboard using Vite for high performance.
 * **P1.2 Search/Filter**: Integrated a real-time search component to filter assets by name or source.
 * **P1.3 Data Visualization**: Implemented interactive bar charts using Recharts to compare asset prices across different platforms.
+* **Deployment**: Deployed to Render with public URL: https://kasparro-backend-subhali-ar-otti.onrender.com/
 
 ---
 
