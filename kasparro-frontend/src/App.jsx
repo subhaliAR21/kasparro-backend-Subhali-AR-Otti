@@ -11,7 +11,7 @@ function App() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/data');
+      const response = await axios.get('https://kasparro-backend-subhali-ar-otti.onrender.com/data');
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);

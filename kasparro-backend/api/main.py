@@ -37,6 +37,10 @@ def on_startup():
 def read_root():
     return {"status": "Backend is running", "database": "Connected"}
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
 @app.get("/data")
 def get_ingested_data(db: Session = Depends(get_db)):
     prices = db.query(UnifiedPrice).all()

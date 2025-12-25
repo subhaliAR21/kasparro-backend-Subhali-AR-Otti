@@ -58,7 +58,6 @@ def run_etl():
     for asset, prices in asset_prices.items():
         avg_price = sum(prices) / len(prices)
         unified_record = UnifiedPrice(
-            source="unified",  # Mark as unified data
             asset=asset,
             price_usd=round(avg_price, 2),
             timestamp=datetime.utcnow()
